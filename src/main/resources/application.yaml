@@ -1,0 +1,6 @@
+ktor:
+    application:
+        modules:
+            - com.azlaan95.ApplicationKt.module
+    deployment:
+        port: 8081

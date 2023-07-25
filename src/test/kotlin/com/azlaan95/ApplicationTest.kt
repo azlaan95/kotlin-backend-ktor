@@ -1,12 +1,11 @@
 package com.azlaan95
 
-import com.azlaan95.plugins.configureRouting
+import com.azlaan95.configureapp.configureRouting
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.server.testing.*
 import kotlin.test.*
 import io.ktor.http.*
-import com.azlaan95.plugins.*
 
 class ApplicationTest {
     @Test

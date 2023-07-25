@@ -1,4 +1,4 @@
-package com.azlaan95.plugins
+package com.azlaan95.configureapp
 
 import com.azlaan95.database.AppStore
 import com.azlaan95.providers.jwt.JWTProvider
@@ -6,8 +6,8 @@ import io.ktor.server.auth.*
 import io.ktor.server.application.*
 
 
-fun Application.configureSecurity() {
-    install(Authentication) {
+fun Application.configureAuthorization() {
+    authentication {
         basic("auth-basic") {
             validate { credentials ->
                 val loggedInUser = AppStore.users.find { user ->

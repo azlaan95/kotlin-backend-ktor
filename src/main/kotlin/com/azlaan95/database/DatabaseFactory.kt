@@ -12,12 +12,13 @@ object DatabaseFactory {
     val databaseName = "sql6635377"
     val databaseUser = "sql6635377"
     val databasePassword = "s5Ie7VngNp"
+    val databaseDriver = "com.mysql.jdbc.Driver"
     val port = 3306
     val url = "jdbc:mysql://$host:$port/$databaseName"
     fun init() {
         val driverClassName = "org.h2.Driver"
         val jdbcURL = "jdbc:h2:file:./build/db"
-        val database = Database.connect(jdbcURL, driverClassName)
+        val database = Database.connect(url, databaseDriver, databaseUser, databasePassword)
         transaction(database) {
             SchemaUtils.create(Users)
         }

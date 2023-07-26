@@ -2,7 +2,7 @@ val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 val exposedVersion: String by project
-
+val mySqlConnectorVersion: String by project
 val h2_version: String by project
 
 plugins {
@@ -41,5 +41,8 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("com.h2database:h2:$h2_version")
+
+    implementation("mysql:mysql-connector-java:$mySqlConnectorVersion")
+
 
 }

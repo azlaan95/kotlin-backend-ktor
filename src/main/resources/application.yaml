@@ -4,3 +4,8 @@ ktor:
             - com.azlaan95.ApplicationKt.module
     deployment:
         port: 8081
+    db:
+        config:
+            url: ""
+            user: ""
+            password: ""

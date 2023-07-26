@@ -1,6 +1,8 @@
 package com.azlaan95.approuting
 
 import com.azlaan95.database.AppStore
+import com.azlaan95.database.daofacade.user.UsersDao
+import com.azlaan95.database.daofacade.user.UsersDaoImpl
 import com.azlaan95.models.AppError
 import com.azlaan95.models.AppResponse
 import com.azlaan95.models.User
@@ -10,6 +12,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.runBlocking
 
 fun Route.registerRoute() {
     route("/register") {
@@ -17,9 +20,13 @@ fun Route.registerRoute() {
             val requestBody = call.receiveText().trimIndent()
             val user = AppGson.gson.fromJson(requestBody, User::class.java)
             if ((user.password.isNotBlank()) && (user.email.isNotBlank())) {
-                AppStore.users.add(user)
-                val response = AppResponse(message = "user has been created", appCode = 200, data = user)
-                call.respond(AppGson.gson.toJson(response))
+                //AppStore.users.add(user)
+                val dao: UsersDao = UsersDaoImpl();
+                runBlocking {
+                    dao.addUser(user)
+                    val response = AppResponse(message = "user has been created", appCode = 200, data = user)
+                    call.respond(AppGson.gson.toJson(response))
+                }
             } else if (user.password.isBlank()) {
                 val response = AppResponse<User>(
                     appCode = 400,

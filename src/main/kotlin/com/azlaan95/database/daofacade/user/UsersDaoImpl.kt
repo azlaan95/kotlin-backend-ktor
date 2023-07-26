@@ -12,7 +12,9 @@ class UsersDaoImpl : UsersDao {
         id = row[Users.id],
         name = row[Users.name],
         email = row[Users.email],
-        password = row[Users.password]
+        password = row[Users.password],
+        token = row[Users.token],
+        refreshToken = row[Users.refreshToken]
     )
 
     override suspend fun getUsers(): List<User> = dbQuery {
@@ -22,6 +24,13 @@ class UsersDaoImpl : UsersDao {
     override suspend fun getUser(id: Int): User? = dbQuery {
         Users
             .select { Users.id eq id }
+            .map(::resultRowToUsers)
+            .singleOrNull()
+    }
+
+    override suspend fun getUserByEmail(email: String): User? = dbQuery {
+        Users
+            .select { Users.email eq email }
             .map(::resultRowToUsers)
             .singleOrNull()
     }
@@ -45,5 +54,26 @@ class UsersDaoImpl : UsersDao {
 
     override suspend fun deleteUser(id: Int): Boolean = dbQuery {
         Users.deleteWhere { Users.id eq id } > 0
+    }
+
+    override suspend fun authUser(email: String, password: String): User? = dbQuery {
+        Users
+            .select { Users.email.eq(email) and Users.password.eq(password) }
+            .map(::resultRowToUsers)
+            .singleOrNull()
+    }
+
+    override suspend fun updateToken(token: String, refereshToken: String, email: String): Boolean = dbQuery {
+        Users.update({ Users.email eq email }) {
+            it[Users.token] = token
+            it[Users.refreshToken] = refereshToken
+        } > 0
+    }
+
+    override suspend fun getUserByToken(token: String): User? = dbQuery {
+        Users
+            .select { Users.token.eq(token) }
+            .map(::resultRowToUsers)
+            .singleOrNull()
     }
 }

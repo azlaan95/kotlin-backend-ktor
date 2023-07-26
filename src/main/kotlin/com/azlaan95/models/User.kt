@@ -9,8 +9,6 @@ data class User(
     val name: String,
     val email: String,
     val password: String,
-    val token: String?,
-    val refreshToken: String?
 )
 
 object Users : Table() {
@@ -18,8 +16,6 @@ object Users : Table() {
     val name = varchar("name", 128)
     val email = varchar("email", 1024)
     val password = varchar("password", 1024)
-    val token = largeText("token").nullable()
-    val refreshToken = largeText("refreshToken").nullable()
 
     override val primaryKey = PrimaryKey(id)
 }

@@ -1,6 +1,8 @@
 package com.azlaan95.configureapp
 
 import com.azlaan95.database.AppStore
+import com.azlaan95.database.daofacade.tokens.JwtTokensDao
+import com.azlaan95.database.daofacade.tokens.JwtTokensDaoImpl
 import com.azlaan95.database.daofacade.user.UsersDao
 import com.azlaan95.database.daofacade.user.UsersDaoImpl
 import com.azlaan95.models.AppResponse
@@ -21,7 +23,7 @@ fun Application.configureAuthorization() {
                 runBlocking {
                     var loggedInUser: User? = dao.authUser(credentials.name, credentials.password)
                     if (loggedInUser != null) {
-                        UserIdPrincipal(loggedInUser.email)
+                        UserIdPrincipal(loggedInUser.id.toString())
                     } else {
                         null
                     }
@@ -32,7 +34,13 @@ fun Application.configureAuthorization() {
         bearer("auth-bearer") {
             authenticate { tokenCredential ->
                 val userId = JWTProvider.isValidToken(tokenCredential.token)
-                val dao: UsersDao = UsersDaoImpl()
+                print(parameters)
+                if (userId!=null) {
+                    UserIdPrincipal(userId)
+                } else {
+                    null
+                }
+                /*val dao: JwtTokensDao = JwtTokensDaoImpl()
                 runBlocking {
                     var user: User? = dao.getUserByToken(tokenCredential.token)
                     if (userId!=null && user?.email == userId) {
@@ -40,7 +48,7 @@ fun Application.configureAuthorization() {
                     } else {
                         null
                     }
-                }
+                }*/
 
             }
         }

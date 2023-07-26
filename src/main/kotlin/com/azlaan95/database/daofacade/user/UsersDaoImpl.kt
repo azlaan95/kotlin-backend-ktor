@@ -12,9 +12,7 @@ class UsersDaoImpl : UsersDao {
         id = row[Users.id],
         name = row[Users.name],
         email = row[Users.email],
-        password = row[Users.password],
-        token = row[Users.token],
-        refreshToken = row[Users.refreshToken]
+        password = row[Users.password]
     )
 
     override suspend fun getUsers(): List<User> = dbQuery {
@@ -63,7 +61,7 @@ class UsersDaoImpl : UsersDao {
             .singleOrNull()
     }
 
-    override suspend fun updateToken(token: String, refereshToken: String, email: String): Boolean = dbQuery {
+/*    override suspend fun updateToken(token: String, refereshToken: String, email: String): Boolean = dbQuery {
         Users.update({ Users.email eq email }) {
             it[Users.token] = token
             it[Users.refreshToken] = refereshToken
@@ -75,5 +73,5 @@ class UsersDaoImpl : UsersDao {
             .select { Users.token.eq(token) }
             .map(::resultRowToUsers)
             .singleOrNull()
-    }
+    }*/
 }

@@ -34,7 +34,7 @@ object JWTProvider {
             .withExpiresAt(refreshTokenExpiresAt)
             .sign(algorithm)
 
-        return JwtToken(accessToken = accessToken, refreshToken = refreshToken, id = userId)
+        return JwtToken(accessToken = accessToken, refreshToken = refreshToken, userId = Integer.parseInt(userId))
     }
 
     fun generateToken(userId: String): String {

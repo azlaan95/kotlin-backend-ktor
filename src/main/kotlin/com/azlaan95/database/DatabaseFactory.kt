@@ -1,6 +1,7 @@
 package com.azlaan95.database
 
 import com.azlaan95.models.Users
+import com.azlaan95.providers.jwt.JwtTokens
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -18,9 +19,10 @@ object DatabaseFactory {
     fun init() {
         val driverClassName = "org.h2.Driver"
         val jdbcURL = "jdbc:h2:file:./build/db"
-        val database = Database.connect(url, databaseDriver, databaseUser, databasePassword)
+        //val database = Database.connect(url, databaseDriver, databaseUser, databasePassword)
+        val database = Database.connect(jdbcURL, driverClassName)
         transaction(database) {
-            SchemaUtils.create(Users)
+            SchemaUtils.create(Users, JwtTokens)
         }
     }
 

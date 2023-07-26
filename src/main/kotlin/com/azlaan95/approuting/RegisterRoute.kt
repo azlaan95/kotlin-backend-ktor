@@ -1,6 +1,5 @@
 package com.azlaan95.approuting
 
-import com.azlaan95.database.AppStore
 import com.azlaan95.database.daofacade.user.UsersDao
 import com.azlaan95.database.daofacade.user.UsersDaoImpl
 import com.azlaan95.models.AppError
@@ -23,9 +22,16 @@ fun Route.registerRoute() {
                 //AppStore.users.add(user)
                 val dao: UsersDao = UsersDaoImpl();
                 runBlocking {
-                    dao.addUser(user)
-                    val response = AppResponse(message = "user has been created", appCode = 200, data = user)
-                    call.respond(AppGson.gson.toJson(response))
+                    var registeredUser: User? = dao.addUser(user)
+                    if(registeredUser!=null){
+                        val response = AppResponse(message = "user has been created", appCode = 200, data = registeredUser)
+                        call.respond(AppGson.gson.toJson(response))
+                    }else{
+                        val response =
+                            AppResponse<User>(appCode = 400, error = AppError(errorMessage = "Something went wrong"))
+                        call.respond(status = HttpStatusCode.BadRequest, message = AppGson.gson.toJson(response))
+                    }
+
                 }
             } else if (user.password.isBlank()) {
                 val response = AppResponse<User>(

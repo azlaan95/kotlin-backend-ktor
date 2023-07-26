@@ -1,7 +1,7 @@
 package com.azlaan95.approuting
 
-import com.azlaan95.database.daofacade.user.UsersDao
-import com.azlaan95.database.daofacade.user.UsersDaoImpl
+import com.azlaan95.database.daofacade.tokens.JwtTokensDao
+import com.azlaan95.database.daofacade.tokens.JwtTokensDaoImpl
 import com.azlaan95.models.AppResponse
 import com.azlaan95.providers.jwt.JWTProvider
 import com.azlaan95.util.AppGson
@@ -14,12 +14,11 @@ import kotlinx.coroutines.runBlocking
 fun Route.authenticateRoute() {
     route("/authenticate") {
         get("/login") {
-            val userEmail: String = call.principal<UserIdPrincipal>()?.name!!
-            val userJwtToken = JWTProvider.generateJwtToken(userEmail);
-            val dao: UsersDao = UsersDaoImpl();
+            val userId: String = call.principal<UserIdPrincipal>()?.name!!
+            val userJwtToken = JWTProvider.generateJwtToken(userId);
+            val dao: JwtTokensDao = JwtTokensDaoImpl();
             runBlocking {
-                dao.updateToken(userJwtToken.accessToken, userJwtToken.refreshToken, userEmail)
-                //AppStore.addToken(userEmail, userJwtToken)
+                dao.addToken(userJwtToken)
                 val response = AppResponse(
                     message = "You are loggedin",
                     appCode = 200,

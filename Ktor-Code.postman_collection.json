@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "a0fe442f-9fb5-40d6-a2a8-a1b6b8d98c06",
+		"name": "Ktor-Code",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19383212"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Divya Aggarwal\",\n    \"email\":\"divya@gmail.com\",\n    \"password\":\"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8081/register",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8081",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is ok\",  ()=>{",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"accessToken\", jsonData.data.accessToken);",
+							"postman.setEnvironmentVariable(\"refreshToken\", jsonData.data.refreshToken);",
+							"postman.setEnvironmentVariable(\"email\", jsonData.data.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "azlaan@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0:8081/authenticate/login",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8081",
+					"path": [
+						"authenticate",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UsersByEmail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZWVwYWtAZ21haWwuY29tIiwiaXNzIjoiSVNTVUVSLUF6bGFhbi1LaGFuIiwiaWQiOiJkZWVwYWtAZ21haWwuY29tIiwiZXhwIjoxNjkwMzYwNzY2LCJpYXQiOjE2OTAzNTcxNjZ9.-HDiHmvW8pgMAftYabZmNvxW6E0s6is3u0jFoxwD3Z8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "id",
+						"value": "deepak@gmail.com",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://0.0.0.0:8081/users?email=azlaan@gmail.com",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8081",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "azlaan@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users/email",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZWVwYWtAZ21haWwuY29tIiwiaXNzIjoiSVNTVUVSLUF6bGFhbi1LaGFuIiwiaWQiOiJkZWVwYWtAZ21haWwuY29tIiwiZXhwIjoxNjkwMzYwNzY2LCJpYXQiOjE2OTAzNTcxNjZ9.-HDiHmvW8pgMAftYabZmNvxW6E0s6is3u0jFoxwD3Z8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "id",
+						"value": "deepak@gmail.com",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://0.0.0.0:8081/users/azlaan@gmail.com",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8081",
+					"path": [
+						"users",
+						"azlaan@gmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users/all",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaXNzIjoiSVNTVUVSLUF6bGFhbi1LaGFuIiwiaWQiOiIyIiwiZXhwIjoxNjkwMzc3NDQxLCJpYXQiOjE2OTAzNzM4NDF9.-lTPD4W1Iyv9Iktsl6AoftLYQAwEcrMs_15eDbuyZlU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "id",
+						"value": "2",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://0.0.0.0:8081/users/all",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8081",
+					"path": [
+						"users",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

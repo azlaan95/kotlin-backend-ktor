@@ -1,17 +1,11 @@
 package com.azlaan95.configureapp
 
-import com.azlaan95.database.AppStore
-import com.azlaan95.database.daofacade.tokens.JwtTokensDao
-import com.azlaan95.database.daofacade.tokens.JwtTokensDaoImpl
 import com.azlaan95.database.daofacade.user.UsersDao
 import com.azlaan95.database.daofacade.user.UsersDaoImpl
-import com.azlaan95.models.AppResponse
 import com.azlaan95.models.User
 import com.azlaan95.providers.jwt.JWTProvider
-import com.azlaan95.util.AppGson
 import io.ktor.server.auth.*
 import io.ktor.server.application.*
-import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
 
 

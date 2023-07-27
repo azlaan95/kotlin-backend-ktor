@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseFactory {
+
     val host = "sql6.freesqldatabase.com"
     val databaseName = "sql6635377"
     val databaseUser = "sql6635377"
@@ -19,8 +20,8 @@ object DatabaseFactory {
     fun init() {
         val driverClassName = "org.h2.Driver"
         val jdbcURL = "jdbc:h2:file:./build/db"
-        //val database = Database.connect(url, databaseDriver, databaseUser, databasePassword)
-        val database = Database.connect(jdbcURL, driverClassName)
+        val database = Database.connect(url, databaseDriver, databaseUser, databasePassword)
+        //val database = Database.connect(jdbcURL, driverClassName)
         transaction(database) {
             SchemaUtils.create(Users, JwtTokens)
         }

@@ -1,7 +1,6 @@
 package com.azlaan95.approuting
 
 import com.azlaan95.database.daofacade.user.UsersDao
-import com.azlaan95.database.daofacade.user.UsersDaoImpl
 import com.azlaan95.models.AppError
 import com.azlaan95.models.AppResponse
 import com.azlaan95.models.User
@@ -13,15 +12,14 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.runBlocking
 
-fun Route.usersRoute() {
+fun Route.usersRoute(usersDao: UsersDao) {
     route("/users") {
         get("/all") {
             val idHeader = call.request.headers["id"]
             val userEmail: String = call.principal<UserIdPrincipal>()?.name!!
             if (idHeader == userEmail) {
-                val dao: UsersDao = UsersDaoImpl();
                 runBlocking {
-                    var users: List<User> = dao.getUsers()
+                    var users: List<User> = usersDao.getUsers()
                     val response = AppResponse(message = "Here are list of users", appCode = 200, data = users)
                     call.respond(AppGson.gson.toJson(response))
                 }
@@ -39,9 +37,8 @@ fun Route.usersRoute() {
             val userEmail: String = call.principal<UserIdPrincipal>()?.name!!
             if (idHeader == userEmail) {
                 val email = call.parameters["email"] ?: ""
-                val dao: UsersDao = UsersDaoImpl();
                 runBlocking {
-                    var user: User? = dao.getUserByEmail(email)
+                    var user: User? = usersDao.getUserByEmail(email)
                     if (user != null) {
                         val response = AppResponse(message = "User Found", appCode = 200, data = user)
                         call.respond(AppGson.gson.toJson(response))
@@ -66,9 +63,8 @@ fun Route.usersRoute() {
                 val parameters = call.request.queryParameters
                 val email = parameters["email"]
                 if (email != null) {
-                    val dao: UsersDao = UsersDaoImpl()
                     runBlocking {
-                        var user: User? = dao.getUserByEmail(email)
+                        var user: User? = usersDao.getUserByEmail(email)
                         if (user != null) {
                             val response = AppResponse(message = "User Found", appCode = 200, data = user)
                             call.respond(AppGson.gson.toJson(response))

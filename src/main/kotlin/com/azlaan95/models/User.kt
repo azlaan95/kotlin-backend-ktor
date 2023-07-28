@@ -14,7 +14,7 @@ data class User(
 object Users : Table() {
     val id = integer("id").autoIncrement()
     val name = varchar("name", 128)
-    val email = varchar("email", 1024)
+    val email = varchar("email", 1024).uniqueIndex()
     val password = varchar("password", 1024)
 
     override val primaryKey = PrimaryKey(id)

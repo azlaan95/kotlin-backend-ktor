@@ -14,15 +14,14 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.runBlocking
 
-fun Route.tokensRoute() {
+fun Route.tokensRoute(tokensDao: JwtTokensDao) {
     route("/tokens") {
         get("/all") {
             val idHeader = call.request.headers["id"]
             val userEmail: String = call.principal<UserIdPrincipal>()?.name!!
             if (idHeader == userEmail) {
-                val dao: JwtTokensDao = JwtTokensDaoImpl()
                 runBlocking {
-                    var tokens: List<JwtToken> = dao.getTokens()
+                    var tokens: List<JwtToken> = tokensDao.getTokens()
                     val response = AppResponse(message = "Here are list of Tokens", appCode = 200, data = tokens)
                     call.respond(AppGson.gson.toJson(response))
                 }
@@ -40,9 +39,8 @@ fun Route.tokensRoute() {
             val userEmail: String = call.principal<UserIdPrincipal>()?.name!!
             if (idHeader == userEmail) {
                 val id = call.parameters["id"] ?: "0"
-                val dao: JwtTokensDao = JwtTokensDaoImpl()
                 runBlocking {
-                    var tokens: List<JwtToken> = dao.getTokenById(Integer.parseInt(id))
+                    var tokens: List<JwtToken> = tokensDao.getTokenById(Integer.parseInt(id))
                     val response = AppResponse(message = "Token Found", appCode = 200, data = tokens)
                     call.respond(AppGson.gson.toJson(response))
                 }

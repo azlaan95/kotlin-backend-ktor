@@ -4,8 +4,14 @@ ktor:
             - com.azlaan95.ApplicationKt.module
     deployment:
         port: 8081
-    db:
-        config:
-            url: ""
-            user: ""
-            password: ""
+    database:
+        h2:
+          url: "jdbc:h2:file:./build/db"
+          user: ""
+          password: ""
+          driver: "org.h2.Driver"
+        freeSql:
+            url: "jdbc:mysql://sql6.freesqldatabase.com:3306/sql6635377"
+            user: "sql6635377"
+            password: "s5Ie7VngNp"
+            driver: "com.mysql.jdbc.Driver"

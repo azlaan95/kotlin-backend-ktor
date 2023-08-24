@@ -4,7 +4,6 @@ import com.azlaan95.database.daofacade.user.UsersDao
 import com.azlaan95.models.AppError
 import com.azlaan95.models.AppResponse
 import com.azlaan95.models.User
-import com.azlaan95.util.AppGson
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -21,14 +20,14 @@ fun Route.usersRoute(usersDao: UsersDao) {
                 runBlocking {
                     var users: List<User> = usersDao.getUsers()
                     val response = AppResponse(message = "Here are list of users", appCode = 200, data = users)
-                    call.respond(AppGson.gson.toJson(response))
+                    call.respond(response)
                 }
             } else {
                 val response = AppResponse<User>(
                     appCode = 400,
                     error = AppError(errorMessage = "You are not authorized, Try login again")
                 )
-                call.respond(status = HttpStatusCode.Unauthorized, message = AppGson.gson.toJson(response))
+                call.respond(status = HttpStatusCode.Unauthorized, message = response)
             }
 
         }
@@ -41,11 +40,11 @@ fun Route.usersRoute(usersDao: UsersDao) {
                     var user: User? = usersDao.getUserByEmail(email)
                     if (user != null) {
                         val response = AppResponse(message = "User Found", appCode = 200, data = user)
-                        call.respond(AppGson.gson.toJson(response))
+                        call.respond(response)
                     } else {
                         val response =
                             AppResponse<User>(appCode = 400, error = AppError(errorMessage = "User Not Found"))
-                        call.respond(status = HttpStatusCode.BadRequest, message = AppGson.gson.toJson(response))
+                        call.respond(status = HttpStatusCode.BadRequest, message = response)
                     }
                 }
             } else {
@@ -53,7 +52,7 @@ fun Route.usersRoute(usersDao: UsersDao) {
                     appCode = 400,
                     error = AppError(errorMessage = "You are not authorized, Try login again")
                 )
-                call.respond(status = HttpStatusCode.Unauthorized, message = AppGson.gson.toJson(response))
+                call.respond(status = HttpStatusCode.Unauthorized, message = response)
             }
         }
         get {
@@ -67,17 +66,17 @@ fun Route.usersRoute(usersDao: UsersDao) {
                         var user: User? = usersDao.getUserByEmail(email)
                         if (user != null) {
                             val response = AppResponse(message = "User Found", appCode = 200, data = user)
-                            call.respond(AppGson.gson.toJson(response))
+                            call.respond(response)
                         } else {
                             val response =
                                 AppResponse<User>(appCode = 400, error = AppError(errorMessage = "User Not Found"))
-                            call.respond(status = HttpStatusCode.BadRequest, message = AppGson.gson.toJson(response))
+                            call.respond(status = HttpStatusCode.BadRequest, message = response)
                         }
                     }
                 } else {
                     val response =
                         AppResponse<User>(appCode = 400, error = AppError(errorMessage = "Please provide Email"))
-                    call.respond(status = HttpStatusCode.BadRequest, message = AppGson.gson.toJson(response))
+                    call.respond(status = HttpStatusCode.BadRequest, message = response)
 
                 }
             } else {
@@ -85,7 +84,7 @@ fun Route.usersRoute(usersDao: UsersDao) {
                     appCode = 400,
                     error = AppError(errorMessage = "You are not authorized, Try login again")
                 )
-                call.respond(status = HttpStatusCode.Unauthorized, message = AppGson.gson.toJson(response))
+                call.respond(status = HttpStatusCode.Unauthorized, message = response)
             }
         }
     }

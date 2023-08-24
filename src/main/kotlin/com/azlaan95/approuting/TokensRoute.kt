@@ -1,12 +1,10 @@
 package com.azlaan95.approuting
 
 import com.azlaan95.database.daofacade.tokens.JwtTokensDao
-import com.azlaan95.database.daofacade.tokens.JwtTokensDaoImpl
 import com.azlaan95.models.AppError
 import com.azlaan95.models.AppResponse
 import com.azlaan95.models.User
 import com.azlaan95.providers.jwt.JwtToken
-import com.azlaan95.util.AppGson
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -23,14 +21,14 @@ fun Route.tokensRoute(tokensDao: JwtTokensDao) {
                 runBlocking {
                     var tokens: List<JwtToken> = tokensDao.getTokens()
                     val response = AppResponse(message = "Here are list of Tokens", appCode = 200, data = tokens)
-                    call.respond(AppGson.gson.toJson(response))
+                    call.respond(response)
                 }
             } else {
                 val response = AppResponse<User>(
                     appCode = 400,
                     error = AppError(errorMessage = "You are not authorized, Try login again")
                 )
-                call.respond(status = HttpStatusCode.Unauthorized, message = AppGson.gson.toJson(response))
+                call.respond(status = HttpStatusCode.Unauthorized, message = response)
             }
 
         }
@@ -42,14 +40,14 @@ fun Route.tokensRoute(tokensDao: JwtTokensDao) {
                 runBlocking {
                     var tokens: List<JwtToken> = tokensDao.getTokenById(Integer.parseInt(id))
                     val response = AppResponse(message = "Token Found", appCode = 200, data = tokens)
-                    call.respond(AppGson.gson.toJson(response))
+                    call.respond(response)
                 }
             } else {
                 val response = AppResponse<User>(
                     appCode = 400,
                     error = AppError(errorMessage = "You are not authorized, Try login again")
                 )
-                call.respond(status = HttpStatusCode.Unauthorized, message = AppGson.gson.toJson(response))
+                call.respond(status = HttpStatusCode.Unauthorized, message = response)
             }
         }
     }

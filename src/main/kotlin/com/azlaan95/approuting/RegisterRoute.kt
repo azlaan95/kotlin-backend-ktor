@@ -4,7 +4,6 @@ import com.azlaan95.database.daofacade.user.UsersDao
 import com.azlaan95.models.AppError
 import com.azlaan95.models.AppResponse
 import com.azlaan95.models.User
-import com.azlaan95.util.AppGson
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -15,19 +14,18 @@ import kotlinx.coroutines.runBlocking
 fun Route.registerRoute(userDao: UsersDao) {
     route("/register") {
         post {
-            val requestBody = call.receiveText().trimIndent()
-            val user = AppGson.gson.fromJson(requestBody, User::class.java)
+            val user: User = call.receive<User>()
             if ((user.password.isNotBlank()) && (user.email.isNotBlank())) {
                 runBlocking {
                     var registeredUser: User? = userDao.addUser(user)
                     if (registeredUser != null) {
                         val response =
                             AppResponse(message = "user has been created", appCode = 200, data = registeredUser)
-                        call.respond(AppGson.gson.toJson(response))
+                        call.respond(response)
                     } else {
                         val response =
                             AppResponse<User>(appCode = 400, error = AppError(errorMessage = "Something went wrong"))
-                        call.respond(status = HttpStatusCode.BadRequest, message = AppGson.gson.toJson(response))
+                        call.respond(status = HttpStatusCode.BadRequest, message = response)
                     }
 
                 }
@@ -36,11 +34,11 @@ fun Route.registerRoute(userDao: UsersDao) {
                     appCode = 400,
                     error = AppError(errorMessage = "Password cannot be empty or blank")
                 )
-                call.respond(status = HttpStatusCode.BadRequest, message = AppGson.gson.toJson(response))
+                call.respond(status = HttpStatusCode.BadRequest, message = response)
             } else {
                 val response =
                     AppResponse<User>(appCode = 400, error = AppError(errorMessage = "Email cannot be empty or blank"))
-                call.respond(status = HttpStatusCode.BadRequest, message = AppGson.gson.toJson(response))
+                call.respond(status = HttpStatusCode.BadRequest, message = response)
             }
 
         }

@@ -4,7 +4,6 @@ import com.azlaan95.database.daofacade.tokens.JwtTokensDao
 import com.azlaan95.models.AppResponse
 import com.azlaan95.providers.jwt.JWTProvider
 import com.azlaan95.providers.jwt.JwtToken
-import com.azlaan95.util.AppGson
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -23,7 +22,7 @@ fun Route.loginRoute(tokensDao: JwtTokensDao) {
                     appCode = 200,
                     data = genToken
                 )
-                call.respond(AppGson.gson.toJson(response))
+                call.respond(response)
             }
         }
     }
